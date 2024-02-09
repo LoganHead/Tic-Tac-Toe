@@ -1,6 +1,6 @@
 package tictactoe;
-import java.time.Year;
 import java.util.Scanner;
+import java.util.Random;
 
 public class Game {
     int[][] board = new int[3][3];
@@ -29,6 +29,10 @@ public class Game {
             printBoard(this.board);
             playersTurn(this.board, player1);
             printBoard(this.board);
+            checkForWin(player1);
+            playersTurn(this.board, player2);
+            printBoard(this.board);
+            checkForWin(player2);
             complete = true;
         }
 
@@ -96,16 +100,32 @@ public class Game {
     public void playersTurn(int[][] board, Player player) {
         Scanner myObj = new Scanner(System.in);
 
-        while (true) {
-            System.out.println("Choose a square by entering a number between 1-9 with 1 representing the top left square and 9 representing the bottom right square");
-            String answer = myObj.nextLine();
-            if (isValidTurn(answer, board)) {
-                executeBoardUpdate(answer, board, player);
-                return;
-            } else {
-                System.out.println("Not a valid move please choose a different number");
+        if (player.playerNumber == 1) {
+            while (true) {
+                System.out.println("Choose a square by entering a number between 1-9 with 1 representing the top left square and 9 representing the bottom right square");
+                String answer = myObj.nextLine();
+                if (isValidTurn(answer, board)) {
+                    executeBoardUpdate(answer, board, player);
+                    return;
+                } else {
+                    System.out.println("Not a valid move please choose a different number");
+                }
+            }
+        } else {
+            while (true) {
+                
+                String answer = botAnswer();
+                
+                if (isValidTurn(answer, board)) {
+                    executeBoardUpdate(answer, board, player);
+                    System.out.println("The bot played in square " + answer);
+                    return;
+                } 
+
             }
         }
+
+        
 
     }
 
@@ -134,5 +154,15 @@ public class Game {
         }
         
 
+    }
+
+    public void checkForWin(Player player) {
+
+    }
+
+    public String botAnswer() {
+        Random rand = new Random();
+        String value  = Integer.toString(rand.nextInt(1,9));
+        return value;
     }
 }
