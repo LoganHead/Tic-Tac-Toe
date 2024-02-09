@@ -184,6 +184,18 @@ public class Game {
                 return true;
             }
 
+            // Left Diagonal Check
+            if ((board[0][0] == player.playerNumber) && (board[1][1] == player.playerNumber) && (board[2][2] == player.playerNumber)) {
+                System.out.println("Player " + player.playerNumber + " Wins!");
+                return true;
+            }
+
+            // Right Diagonal Check
+            if ((board[0][2] == player.playerNumber) && (board[1][1] == player.playerNumber) && (board[2][0] == player.playerNumber)) {
+                System.out.println("Player " + player.playerNumber + " Wins!");
+                return true;
+            }
+
         }
 
         return false;
