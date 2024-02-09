@@ -16,6 +16,7 @@ public class Game {
 
         if (initaliseGame()) {
             System.out.println("The game has begun, you are X");
+            printBoard(this.board);
         } else {
             return;
         }
@@ -26,14 +27,20 @@ public class Game {
         initaliseBoard(board);
 
         while (!complete) {
-            printBoard(this.board);
+            
             playersTurn(this.board, player1);
             printBoard(this.board);
-            checkForWin(player1);
+            complete = checkForWin(player1, this.board, this.round);
+            if (complete) {
+                break;
+            }
             playersTurn(this.board, player2);
-            printBoard(this.board);
-            checkForWin(player2);
-            complete = true;
+            complete = checkForWin(player2, this.board, this.round);
+            printBoard(board);
+            if (complete) {
+                break;
+            }
+            this.round = this.round + 1;
         }
 
     }
@@ -156,8 +163,31 @@ public class Game {
 
     }
 
-    public void checkForWin(Player player) {
+    public boolean checkForWin(Player player, int[][] board, int round) {
 
+        if (round > 9) {
+            System.out.println("It's a draw");
+            return true;
+        }
+
+        for (int i = 0; i < 3; i++) {
+
+            // Horizontal Check
+            if ((board[i][0] == player.playerNumber) && (board[i][1] == player.playerNumber) && (board[i][2] == player.playerNumber)) {
+                System.out.println("Player " + player.playerNumber + " Wins!");
+                return true;
+            }
+
+            // Vertical Check
+            if ((board[0][i] == player.playerNumber) && (board[1][i] == player.playerNumber) && (board[2][i] == player.playerNumber)) {
+                System.out.println("Player " + player.playerNumber + " Wins!");
+                return true;
+            }
+
+        }
+
+        return false;
+        
     }
 
     public String botAnswer() {

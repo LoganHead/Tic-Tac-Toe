@@ -7,5 +7,6 @@ public class App
     {
         Game game = new Game();
         game.playGame();
+        return;
     }
 }
