@@ -1,4 +1,5 @@
 package tictactoe;
+import java.time.Year;
 import java.util.Scanner;
 
 public class Game {
@@ -13,17 +14,21 @@ public class Game {
     public void playGame() {
         boolean complete = false;
 
-        boolean proceed  = initaliseGame();
-        if (proceed) {
+        if (initaliseGame()) {
             System.out.println("The game has begun, you are X");
         } else {
             return;
         }
 
+        Player player1 = new Player(1);
+        Player player2 = new Player(2);
+
         initaliseBoard(board);
 
         while (!complete) {
-            printBoard(board);
+            printBoard(this.board);
+            playersTurn(this.board, player1);
+            printBoard(this.board);
             complete = true;
         }
 
@@ -38,9 +43,11 @@ public class Game {
             String answer = myObj.nextLine();
             
             if (answer.equalsIgnoreCase("Y")) {
+                
                 return(true);
 
             } else if (answer.equalsIgnoreCase("N")) {
+                
                 return(false);
 
             } else {
@@ -83,6 +90,49 @@ public class Game {
             }
             System.out.println(line);
         }
+
+    }
+
+    public void playersTurn(int[][] board, Player player) {
+        Scanner myObj = new Scanner(System.in);
+
+        while (true) {
+            System.out.println("Choose a square by entering a number between 1-9 with 1 representing the top left square and 9 representing the bottom right square");
+            String answer = myObj.nextLine();
+            if (isValidTurn(answer, board)) {
+                executeBoardUpdate(answer, board, player);
+                return;
+            } else {
+                System.out.println("Not a valid move please choose a different number");
+            }
+        }
+
+    }
+
+    public boolean isValidTurn(String value, int[][] board) {
+        int number = Integer.parseInt(value);
+        int i = (number - 1) / 3;
+        int j = (number - 1) % 3;
+
+        if (board[i][j] == 0 || (number < 1 || number > 9)) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    public void executeBoardUpdate(String value, int[][] board, Player player) {
+        int number = Integer.parseInt(value);
+        int i = (number - 1) / 3;
+        int j = (number - 1) % 3;
+
+        if (player.playerNumber == 1) {
+            board[i][j] = 1;
+        } else {
+            board[i][j] = 2;
+        }
+        
 
     }
 }
